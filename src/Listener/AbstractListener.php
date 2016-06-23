@@ -70,7 +70,7 @@ abstract class AbstractListener
      * Minify var_export result
      *
      * @param array|\Traversable|\Zend\Config\Config $var
-     * @return array
+     * @return string
      */
     private function var_export_min($var)
     {
