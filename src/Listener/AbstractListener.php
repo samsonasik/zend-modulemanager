@@ -53,16 +53,36 @@ abstract class AbstractListener
     }
 
     /**
-     * Write a simple array of scalars to a file
+     * Write a config to a file
      *
      * @param  string $filePath
-     * @param  array $array
+     * @param  array|\Traversable|\Zend\Config\Config $config
      * @return AbstractListener
      */
-    protected function writeArrayToFile($filePath, $array)
+    protected function writeConfigToFile($filePath, $config)
     {
-        $content = "<?php\nreturn " . var_export($array, 1) . ';';
+        $content = "<?php\nreturn " . $this->var_export_min($config) . ';';
         file_put_contents($filePath, $content);
         return $this;
+    }
+
+    /**
+     * Minify var_export result
+     *
+     * @param array|\Traversable|\Zend\Config\Config $var
+     * @return array
+     */
+    private function var_export_min($var)
+    {
+        if (is_array($var)) {
+            $toImplode = [];
+            foreach ($var as $key => $value) {
+                $toImplode[] = var_export($key, 1) . '=>' . $this->var_export_min($value);
+            }
+
+            return '['.implode(',', $toImplode).']';
+        }
+
+        return var_export($var, 1);
     }
 }

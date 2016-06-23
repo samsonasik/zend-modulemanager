@@ -118,7 +118,7 @@ class ModuleLoaderListener extends AbstractListener implements ListenerAggregate
     public function onLoadModulesPost(ModuleEvent $event)
     {
         $this->moduleLoader->unregister();
-        $this->writeArrayToFile(
+        $this->writeConfigToFile(
             $this->options->getModuleMapCacheFile(),
             $this->moduleLoader->getModuleClassMap()
         );
